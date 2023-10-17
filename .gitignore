@@ -7,3 +7,5 @@ CarWashLibrary/CarWashLibrary.csproj
 CarWashLibrary/obj
 CarWashApp/obj
 CarWashApp/CarWashApp.csproj
+CarWashTest/obj
+CarWashTest/CarWashTest.csproj
