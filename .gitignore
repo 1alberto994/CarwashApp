@@ -1,0 +1,9 @@
+CarwashApp.sln
+FileManagerLibrary/obj
+FileManagerLibrary/FileManagerLibrary.csproj
+ClientLibrary/obj
+ClientLibrary/ClientLibrary.csproj
+CarWashLibrary/CarWashLibrary.csproj
+CarWashLibrary/obj
+CarWashApp/obj
+CarWashApp/CarWashApp.csproj
