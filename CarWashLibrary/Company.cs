@@ -2,21 +2,22 @@ using System.Reflection.Metadata.Ecma335;
 
 public class Company
 {
-    Dictionary<int, Implant> _implants = new();
+    private Dictionary<string, Implant> _implants = new();
 
+    private bool _StatusChanged = false; //event ?? 
 
 
     /* 
         Search the implant that has been on "broken" state most time : 
-            - Sorted Set (1 DS for each point 4/5)  N
-            - Search Algorithm ( ?? need to search in the single dictionary...)
-            - Sorting DS + (obeserver? 1 DS for each point 4/5) 
+            - Sorted Set (1 DS for each point 4/5)  N maybe?
+            - Search Algorithm ( ?? need to search in the single dictionary...) N
+            - Sorting DS + (obeserver? 1 DS for each point 4/5) N
             - MaxHeap (1 DS for each point 4/5)
 
     */
 
     /* ---------- First Solution SortedSet ---------- */
-    
+
     /*
      ------------------------------------------------------------------------------------------------------------------------------------------------------
         time complexity O(logn) per inserimenti <<
@@ -77,7 +78,7 @@ public class Company
             }
 
     */
-    
+
     /* 
     
         ---------- O(n^2) time complexity too much hight ---------- 
@@ -95,6 +96,37 @@ public class Company
     }
 
     */
+
+
+    /* ---------- Third solution Sorted DS ---------- */
+
+    // a) list 
+
+    /* 
+        ------------------------------------------------------------------------------------------------------------------------------------------------------
+        time complexity O(nlogn)
+        space complexity O()
+        ------------------------------------------------------------------------------------------------------------------------------------------------------
+    */
+
+    // private List<Implant> _mostBroken = new();
+
+    // public Implant SearchMostTImeBrokenImplant()
+    // {
+    //     //check if the Status of some implant has been changed
+    //     if (!_StatusChanged) return _mostBroken[0];
+
+    //     Sort(_mostBroken);
+    //     return _mostBroken[0];
+    // }
+
+    // public void Sort(IEnumerable<Implant> implants) 
+    // {
+    //     // o(nlong) con qulcisasi algoritmo di sorting
+    // }
+
+    
+
 
 
 }

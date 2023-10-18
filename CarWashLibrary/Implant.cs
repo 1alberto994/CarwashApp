@@ -4,11 +4,13 @@ public class Implant
 {
     private enum States { O, M, G }
 
-    private int _id;
+    private string _id;
 
     private States _currentState;
 
     private List<States> _statesLog = new(); //non so se manterrò una lista
+
+    public string ID { get => _id; }
 
     public string CurrentState
     {
@@ -27,16 +29,4 @@ public class Implant
             }
         }
     }
-
-    public int HowManyTimeBroken()
-    {
-        int howManyTimeBroken = 0;
-        foreach (var state in _statesLog)
-        {
-            if (state == States.G) { howManyTimeBroken++; }
-        }
-        return howManyTimeBroken;
-    }
-
-
 }
