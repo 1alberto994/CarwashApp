@@ -6,5 +6,5 @@ public class AutoImplant : Implant
     // private ?? [] oldState; 
     private double cost;
 
-    public int howManyTimeBroken() { /* Not implemented */ }
+    // public int howManyTimeBroken() { /* Not implemented */ }
 }
