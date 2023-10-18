@@ -1,27 +1,32 @@
 using System.Security.AccessControl;
+using System.Text.Json;
 
 public class FileManager : IDisposable
 {
-    private string _path;
+    private string _path, _outPath;
     private Company _company;
 
-    private void SaveAll()
+    private async void SaveAll()
     {
-        //prendi tutti gli impianti da _company
+        List<Implant> implants = new(); // _company.ViewImplant();
 
-        //fanne il salvataggio su file
+        StreamWriter JsonFileWR = new StreamWriter(_outPath);
+        foreach (Implant implant in implants)
+        {
+            string serializedImplant = JsonSerializer.Serialize(implant);
+            await JsonFileWR.WriteLineAsync(serializedImplant);
+        }
     }
 
-    public FileManager(string path)
+    public FileManager(string path, Company company)
     {
         _path = path;
+        _company = company;
     }
 
 
     public void Dispose()
     {
-        //salvo tutto sui file; 
-
         try
         {
             SaveAll();
@@ -30,11 +35,14 @@ public class FileManager : IDisposable
         {
 
         }
-
-
         GC.SuppressFinalize(this);
     }
 
+    public void pushAll()
+    {
+        // prendo gli impianti dal file json e li carico
+        // _company.InsertNewImplant(implant);
+    }
 
     ~FileManager() { }
 
