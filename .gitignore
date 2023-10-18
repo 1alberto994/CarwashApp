@@ -9,3 +9,5 @@ CarWashApp/obj
 CarWashApp/CarWashApp.csproj
 CarWashTest/obj
 CarWashTest/CarWashTest.csproj
+CarWashLibrary/bin
+CarWashTest/bin
