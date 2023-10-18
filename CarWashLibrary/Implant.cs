@@ -1,13 +1,13 @@
 public class Implant
 {
-    private enum States { O,M,B};
+    private enum States { O, M, B };
     private States _currentState;
     private double _costSinglewash;
-    private List<Tuple<DateOnly,States>>_logPrevStates;
+    private List<Tuple<DateOnly, States>> _logPrevStates;
     private string _id;
 
-    public string ID {get=>_id;}
-     public string CurrentState
+    public string ID { get => _id; }
+    public string CurrentState
     {
         get
         {
@@ -24,7 +24,7 @@ public class Implant
             }
         }
     }
-    public double CostSingleWash{get=>_costSinglewash;}
-    
-    
+    public double CostSingleWash { get => _costSinglewash; }
+
+
 }
