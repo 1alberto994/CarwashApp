@@ -8,5 +8,5 @@ public class SelfImplant : Implant
     public int WashingCounter { get => _washingCounter; }
     public int BrushWaxingCounter { get => _brushwaxingCounter; }
 
-    public SelfImplant(string id, double washCost) : base(id, washCost){}
+    public SelfImplant(string id, double washCost) : base(id, washCost) { }
 }
