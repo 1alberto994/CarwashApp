@@ -83,14 +83,17 @@ public class CarWashLibraryTest
        SelfImplant implant1=new("1",1);
        SelfImplant implant2=new("2",2);
        AutoImplant implant=new("3",3);
-       List<Implant> viewimplant=new List<Implant>() ;
-       viewimplant.Add(implant1);
-       viewimplant.Add(implant2);
-       viewimplant.Add(implant);
+       List<Implant> mynewimplant=new List<Implant>() ;
+       mynewimplant.Add(implant1);
+       mynewimplant.Add(implant2);
+       mynewimplant.Add(implant);
+       
+       Company companyWithCollection = new();
+       List<Implant> viewimplant =(List<Implant>) companyWithCollection.ViewImplant();
        bool flag = true;
         for(int i = 0; i<viewimplant.Count; i++)
         {
-            flag = viewimplant[i] == viewimplant[i] ? true : false; 
+            flag = mynewimplant[i] == viewimplant[i] ? true : false; 
             if(!flag) break;
         }
          Assert.IsTrue(flag);
