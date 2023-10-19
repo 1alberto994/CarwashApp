@@ -90,11 +90,11 @@ public class Company
 
     public ICollection<Implant> ViewImplant()
     {
-        
-       List<Implant> viewImplant= new List<Implant>();
+
+        List<Implant> viewImplant = new List<Implant>();
         foreach (var implant in _implants.Values)
         {
-            if (implant is SelfImplant )
+            if (implant is SelfImplant)
             {
                 viewImplant.Add(implant);
             }
@@ -102,7 +102,7 @@ public class Company
 
         foreach (var implant in _implants.Values)
         {
-            if (implant is AutoImplant )
+            if (implant is AutoImplant)
             {
                 viewImplant.Add(implant);
             }
@@ -113,7 +113,7 @@ public class Company
     public Implant ViewImplantByID(string ID)
     {
 
-       
+
         return _implants[ID];
     }
     public ICollection<Implant> SearchStatusMaintenance()
@@ -124,7 +124,7 @@ public class Company
             if (implant.CurrentState == Implant.States.M) { maintenance.Add(implant); }
         }
 
-            return maintenance;
+        return maintenance;
     }
 
 }
