@@ -14,3 +14,6 @@ CarWashTest/bin
 ClientLibrary/bin
 CarWashApp/bin
 FileManagerLibrary/bin
+FileManagerLibraryTest/FileManagerLibraryTest.csproj
+FileManagerLibraryTest/bin
+FileManagerLibraryTest/obj
