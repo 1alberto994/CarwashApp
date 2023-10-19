@@ -1,29 +1,36 @@
+using System.Collections;
+using System.Runtime.Serialization;
 using System.Xml.XPath;
 
 public class Company
 {
     private Dictionary<string, Implant> _implants;
-
-    public string ViewImplant()
+    public ICollection<Implant> ViewImplant()
     {
-        string autoImplant = "";
-        string selfImplant = "";
-        foreach (var implants in _implants)
+        
+       List<Implant> viewImplant= new List<Implant>();
+        foreach (var implant in _implants.Values)
         {
-            if (implants.Value is SelfImplant)
+            if (implant is SelfImplant )
             {
-                selfImplant += implants.Value.ToString();
-            }
-            else
-            {
-                autoImplant += implants.Value.ToString();
+                viewImplant.Add(implant);
             }
         }
-        return selfImplant + autoImplant;
+
+        foreach (var implant in _implants.Values)
+        {
+            if (implant is AutoImplant )
+            {
+                viewImplant.Add(implant);
+            }
+        }
+        return viewImplant;
     }
 
     public string ViewImplantByID(string ID)
     {
+
+        // RITORNARE OGGETTO
         Implant implant = _implants[ID];
         string result = "ID" + implant.ID;
         result += "Current state:" + implant.CurrentState;
@@ -42,7 +49,7 @@ public class Company
         return result;
 
     }
-    public List<Implant> SearchSatusMaintenance()
+    public ICollection<Implant> SearchSatusMaintenance()
     {
         List<Implant> maintenance = new();
         foreach (var implant in _implants.Values)
@@ -57,3 +64,4 @@ public class Company
     }
 
 }
+
