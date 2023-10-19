@@ -9,8 +9,8 @@ CarWashApp/obj
 CarWashApp/CarWashApp.csproj
 CarWashTest/obj
 CarWashTest/CarWashTest.csproj
-ClientLibrary/bin
-CarWashTest/bin
-FileManagerLibrary/bin
 CarWashLibrary/bin
+CarWashTest/bin
+ClientLibrary/bin
 CarWashApp/bin
+FileManagerLibrary/bin
