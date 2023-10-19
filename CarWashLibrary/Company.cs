@@ -27,27 +27,11 @@ public class Company
         return viewImplant;
     }
 
-    public string ViewImplantByID(string ID)
+    public Implant ViewImplantByID(string ID)
     {
 
         // RITORNARE OGGETTO
-        Implant implant = _implants[ID];
-        string result = "ID" + implant.ID;
-        result += "Current state:" + implant.CurrentState;
-
-
-        if (implant is AutoImplant)
-        {
-            AutoImplant autoImplant = (AutoImplant)implant;
-            result += "Counter wash:" + autoImplant.CountWash;
-        }
-        else
-        {
-            SelfImplant selfImplant = (SelfImplant)implant;
-            result += "Compressor counter:" + selfImplant.CompressorCounter + "\n" + "Washing lance counter:" + selfImplant.WashingCounter + "\n" + "Brush waxing counter:" + selfImplant.BrushWaxingCounter;
-        }
-        return result;
-
+        return _implants[ID];
     }
     public ICollection<Implant> SearchSatusMaintenance()
     {
