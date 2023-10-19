@@ -1,7 +1,7 @@
 using System.Security.AccessControl;
 using System.Text.Json;
 
-public class FileManager : IDisposable
+public class FileManager
 {
     private string _path, _outPath;
     private Company _company;
@@ -24,26 +24,15 @@ public class FileManager : IDisposable
         _company = company;
     }
 
-
-    public void Dispose()
-    {
-        try
-        {
-            SaveAll();
-            GC.SuppressFinalize(this);
-        }
-        catch
-        {
-
-        }
-    }
-
     public void pushAll()
     {
         // prendo gli impianti dal file json e li carico
         // _company.InsertNewImplant(implant);
     }
 
-    ~FileManager() { }
+    ~FileManager()
+    {
+        SaveAll();
+    }
 
 }
