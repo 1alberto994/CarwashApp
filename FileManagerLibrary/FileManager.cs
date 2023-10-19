@@ -30,12 +30,12 @@ public class FileManager : IDisposable
         try
         {
             SaveAll();
+            GC.SuppressFinalize(this);
         }
         catch
         {
 
         }
-        GC.SuppressFinalize(this);
     }
 
     public void pushAll()
