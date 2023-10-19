@@ -30,10 +30,10 @@ public class Company
     public Implant ViewImplantByID(string ID)
     {
 
-        // RITORNARE OGGETTO
+       
         return _implants[ID];
     }
-    public ICollection<Implant> SearchSatusMaintenance()
+    public ICollection<Implant> SearchStatusMaintenance()
     {
         List<Implant> maintenance = new();
         foreach (var implant in _implants.Values)
