@@ -1,7 +1,5 @@
-
 public class Implant
 {
-
     public enum States { O, M, B };
 
     private States _currentState = States.O;
@@ -14,6 +12,18 @@ public class Implant
 
     private int _howManyTimeBroken = 0;
 
+    protected void RaiseEvent(EventArgs e)
+    {
+        EventHandler<EventArgs> statusChanged = StateChangedEvent;
+
+        if (statusChanged != null)
+        {
+            statusChanged(this, e);
+        }
+    }
+
+    public event EventHandler<EventArgs> StateChangedEvent;
+
     public int HowManyTimeBroken { get => _howManyTimeBroken; }
 
     public string ID { get => _id; }
@@ -24,15 +34,17 @@ public class Implant
 
     public bool ChangeState(States state, DateOnly date)
     {
-        if(state == _currentState) return false; 
+        if (state == _currentState) { return false; }
         if (date < DateOnly.FromDateTime(DateTime.Now)) throw new InvalidDateExcepetion($"{date} inserted is in the past!");
 
         _currentState = state;
         _logPrevStates.Add((date, _currentState));
 
-        if(_currentState != States.B) return true;
+        if (_currentState != States.B) return true;
 
         _howManyTimeBroken++;
+        RaiseEvent(EventArgs.Empty);
+
         return true;
     }
 
@@ -40,7 +52,8 @@ public class Implant
     {
         _id = id;
         _costSinglewash = costSingleWash;
+
         _logPrevStates.Add((DateOnly.FromDateTime(DateTime.Now), _currentState));
     }
-    
+
 }

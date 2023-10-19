@@ -31,13 +31,19 @@ public class CarWashLibraryTest
 
         Implant[] implants = { implant1, implant2, implant3 };
         Company companyWithCollection = new(implants);
-        Company companyWithoutCollection = new();
 
         Assert.AreEqual(implant1, companyWithCollection.SearchMostBrokenImplant());
         implant2.ChangeState(Implant.States.B, DateOnly.FromDateTime(DateTime.Now));
         implant2.ChangeState(Implant.States.B, DateOnly.FromDateTime(DateTime.Now));
         Assert.AreEqual(implant1, companyWithCollection.SearchMostBrokenImplant());
+        implant2.ChangeState(Implant.States.O, DateOnly.FromDateTime(DateTime.Now));
+        implant2.ChangeState(Implant.States.B, DateOnly.FromDateTime(DateTime.Now));
+        Assert.AreEqual(implant2, companyWithCollection.SearchMostBrokenImplant());
+
+
+
     }
+
 
     [TestMethod]
     public void TestMostUsedAutoImplant()
@@ -53,7 +59,7 @@ public class CarWashLibraryTest
         Assert.AreEqual(implant1, companyWithCollection.SearchMostUsedAutoImplant());
         implant3.MakeWash();
         implant3.MakeWash();
-        Assert.AreEqual(implant1, companyWithCollection.SearchMostUsedAutoImplant());
+        Assert.AreEqual(implant3, companyWithCollection.SearchMostUsedAutoImplant());
 
     }
 

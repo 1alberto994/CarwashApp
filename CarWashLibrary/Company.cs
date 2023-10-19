@@ -4,10 +4,10 @@ public class Company
 {
     private Dictionary<string, Implant> _implants = new();
 
-    private bool _ImplantStatusChanged = true, _autoImplantStatusChanged = true; //event !! (voglio che lo stato di _statusChanged cambi quando viene cambiato in true al cambiamento di stato di un oggetto)
+    private bool _ImplantStatusChanged = true, _autoImplantStatusChanged = true;
 
     private Implant _maxImplant = null;
-    
+
     private AutoImplant _mostUsedAutoImplant = null;
 
     public Implant SearchMostBrokenImplant()
@@ -56,6 +56,8 @@ public class Company
         try
         {
             _implants.Add(implant.ID, implant);
+            implant.StateChangedEvent += StateChangedHandler;
+            if (implant is AutoImplant) { ((AutoImplant)implant).WashDoneEvent += WashIncrementHandler; }
             return true;
         }
         catch (ArgumentException)
@@ -64,10 +66,25 @@ public class Company
         }
     }
 
+    public void StateChangedHandler(object sender, EventArgs e)
+    {
+        if (!_ImplantStatusChanged) { _ImplantStatusChanged = true; }
+    }
+
+    public void WashIncrementHandler(object sender, EventArgs e)
+    {
+        if (!_autoImplantStatusChanged) { _autoImplantStatusChanged = true; }
+    }
     public Company() { }
 
     public Company(ICollection<Implant> implants)
     {
-        foreach (Implant implant in implants) { InsertNewImplant(implant); }
+        foreach (Implant implant in implants)
+        {
+            InsertNewImplant(implant);
+            implant.StateChangedEvent += StateChangedHandler;
+            if (implant is AutoImplant) { ((AutoImplant)implant).WashDoneEvent += WashIncrementHandler; }
+        }
+
     }
 }
