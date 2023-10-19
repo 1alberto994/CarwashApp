@@ -1,41 +1,52 @@
 using System.Security.AccessControl;
+using System.Text.Json;
 
-public class FileManager : IDisposable
+public class FileManager
 {
-    private string _path;
+    private string _inPath, _outPath;
     private Company _company;
 
-    private void SaveAll()
+    private async void SaveAll()
     {
-        //prendi tutti gli impianti da _company
+        List<Implant> implants = new(); // _company.ViewImplant();
 
-        //fanne il salvataggio su file
-    }
-
-    public FileManager(string path)
-    {
-        _path = path;
-    }
-
-
-    public void Dispose()
-    {
-        //salvo tutto sui file; 
-
-        try
+        StreamWriter JsonFileWR = new StreamWriter(_outPath);
+        foreach (Implant implant in implants)
         {
+            string serializedImplant = JsonSerializer.Serialize(implant);
+            await JsonFileWR.WriteLineAsync(serializedImplant);
+        }
+    }
+
+    private void pushAll()
+    {
+        StreamReader JsonFileReader = new(_inPath);
+        string? jsonLine;
+        while ((jsonLine = JsonFileReader.ReadLine()) != null)
+        {
+            _company.InsertNewImplant(JsonSerializer.Deserialize<Implant>(jsonLine));
+        }
+    }
+
+    public FileManager(string inPath, string outPath, Company company)
+    {
+        _inPath = inPath;
+        _outPath = outPath;
+        _company = company;
+
+        pushAll();
+    }
+
+    public FileManager(string inPath, Company company)
+    {
+        _inPath = _outPath = inPath;
+        _company = company;
+
+        pushAll();
+    }
+
+    ~FileManager()
+    {
             SaveAll();
-        }
-        catch
-        {
-
-        }
-
-
-        GC.SuppressFinalize(this);
     }
-
-
-    ~FileManager() { }
-
 }
