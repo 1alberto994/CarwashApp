@@ -3,7 +3,7 @@ using System.Text.Json;
 
 public class FileManager
 {
-    private string _path, _outPath;
+    private string _inPath, _outPath;
     private Company _company;
 
     private async void SaveAll()
@@ -18,21 +18,35 @@ public class FileManager
         }
     }
 
-    public FileManager(string path, Company company)
+    private void pushAll()
     {
-        _path = path;
-        _company = company;
+        StreamReader JsonFileReader = new(_inPath);
+        string? jsonLine;
+        while ((jsonLine = JsonFileReader.ReadLine()) != null)
+        {
+            _company.InsertNewImplant(JsonSerializer.Deserialize<Implant>(jsonLine));
+        }
     }
 
-    public void pushAll()
+    public FileManager(string inPath, string outPath, Company company)
     {
-        // prendo gli impianti dal file json e li carico
-        // _company.InsertNewImplant(implant);
+        _inPath = inPath;
+        _outPath = outPath;
+        _company = company;
+
+        pushAll();
+    }
+
+    public FileManager(string inPath, Company company)
+    {
+        _inPath = _outPath = inPath;
+        _company = company;
+
+        pushAll();
     }
 
     ~FileManager()
     {
-        SaveAll();
+            SaveAll();
     }
-
 }

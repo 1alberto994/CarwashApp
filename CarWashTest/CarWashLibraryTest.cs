@@ -56,5 +56,4 @@ public class CarWashLibraryTest
         Assert.AreEqual(implant1, companyWithCollection.SearchMostUsedAutoImplant());
 
     }
-
 }
