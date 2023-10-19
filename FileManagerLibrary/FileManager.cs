@@ -1,5 +1,6 @@
 using System.Security.AccessControl;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 public class FileManager
 {
@@ -20,11 +21,20 @@ public class FileManager
 
     private void pushAll()
     {
-        StreamReader JsonFileReader = new(_inPath);
-        string? jsonLine;
-        while ((jsonLine = JsonFileReader.ReadLine()) != null)
+        using (StreamReader JsonFileReader = new(_inPath))
         {
-            _company.InsertNewImplant(JsonSerializer.Deserialize<Implant>(jsonLine));
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            string? jsonLine;
+            while ((jsonLine = JsonFileReader.ReadLine()) != null)
+            {
+
+                var implant = JsonSerializer.Deserialize<Implant>(jsonLine, options);
+                _company.InsertNewImplant(implant);
+
+            }
         }
     }
 
@@ -47,6 +57,6 @@ public class FileManager
 
     ~FileManager()
     {
-            SaveAll();
+        SaveAll();
     }
 }

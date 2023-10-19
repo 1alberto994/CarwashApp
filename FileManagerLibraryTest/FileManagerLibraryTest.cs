@@ -8,7 +8,7 @@ public class CarWashLibraryTest
     [TestMethod]
     public void TestFilePushAllMethod()
     {
-        Implant[] implants = { new AutoImplant("1", 1), new AutoImplant("2", 1), new AutoImplant("3", 1) };
+        AutoImplant[] implants = { new AutoImplant("1", 1), new AutoImplant("2", 1), new AutoImplant("3", 1) };
 
         Company company = new();
 
@@ -16,7 +16,12 @@ public class CarWashLibraryTest
         string outPath = "C:/Users/bsett/Desktop/MyGitHub/TrainingProgramProject/CarwashApp/JsonInventory/SavedImplant.json";
         using (StreamWriter JsonFileWR = new StreamWriter(inPath))
         {
-            foreach (Implant implant in implants)
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            foreach (var implant in implants)
             {
                 string serializedImplant = JsonSerializer.Serialize(implant);
                 JsonFileWR.WriteLine(serializedImplant);
@@ -24,5 +29,17 @@ public class CarWashLibraryTest
         }
 
         FileManager fileManager = new(inPath, outPath, company);
+        bool flag = true;
+
+        List<Implant> implantsTookFromCompany = (List<Implant>)company.ViewImplant();
+        for (int i = 0; i < implants.Length; i++)
+        {
+            if (implantsTookFromCompany[i] != implants[i])
+            {
+                flag = false;
+                break;
+            }
+        }
+        Assert.IsTrue(flag);
     }
 }

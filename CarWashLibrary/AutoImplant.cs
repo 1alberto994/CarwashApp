@@ -1,3 +1,7 @@
+using System.Text.Json.Serialization;
+
+[JsonDerivedType(typeof(AutoImplant), typeDiscriminator: "AutoImplant")]
+
 public class AutoImplant : Implant
 {
     private int _countWash = 0;
@@ -23,5 +27,4 @@ public class AutoImplant : Implant
     }
 
     public AutoImplant(string id, double washCost) : base(id, washCost) { }
-
 }
