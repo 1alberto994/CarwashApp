@@ -15,10 +15,5 @@ ClientLibrary/bin
 CarWashApp/bin
 FileManagerLibrary/bin
 FileManagerLibraryTest/FileManagerLibraryTest.csproj
-<<<<<<< HEAD
 FileManagerLibraryTest/bin
 FileManagerLibraryTest/obj
-=======
-FileManagerLibraryTest/obj
-FileManagerLibraryTest/bin
->>>>>>> JsonFileManager
