@@ -87,4 +87,45 @@ public class Company
         }
 
     }
+
+    public ICollection<Implant> ViewImplant()
+    {
+        
+       List<Implant> viewImplant= new List<Implant>();
+        foreach (var implant in _implants.Values)
+        {
+            if (implant is SelfImplant )
+            {
+                viewImplant.Add(implant);
+            }
+        }
+
+        foreach (var implant in _implants.Values)
+        {
+            if (implant is AutoImplant )
+            {
+                viewImplant.Add(implant);
+            }
+        }
+        return viewImplant;
+    }
+
+    public Implant ViewImplantByID(string ID)
+    {
+
+       
+        return _implants[ID];
+    }
+    public ICollection<Implant> SearchStatusMaintenance()
+    {
+        List<Implant> maintenance = new();
+        foreach (var implant in _implants.Values)
+        {
+            if (implant.CurrentState == Implant.States.M) { maintenance.Add(implant); }
+        }
+
+            return maintenance;
+    }
+
 }
+
