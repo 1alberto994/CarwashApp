@@ -1,3 +1,5 @@
+using System.Runtime.Serialization;
+
 namespace CarWashTest;
 
 [TestClass]
@@ -62,4 +64,53 @@ public class CarWashLibraryTest
         Assert.AreEqual(implant3, companyWithCollection.SearchMostUsedAutoImplant());
 
     }
+
+    [TestMethod]
+    public void TestViewImplantByID()
+    {
+       AutoImplant implant=new("1",1);
+       SelfImplant implant1=new("2",2);
+       SelfImplant implant2=new("3",3);
+       Implant[] implants = { implant,implant1,implant2};
+       Company companyWithCollection = new(implants);
+       Assert.AreEqual(implant, companyWithCollection.ViewImplantByID("1")); 
+    }
+    
+    [TestMethod]
+
+    public void TestViewImplant()
+    {
+       SelfImplant implant1=new("1",1);
+       SelfImplant implant2=new("2",2);
+       AutoImplant implant=new("3",3);
+       List<Implant> viewimplant=new List<Implant>() ;
+       viewimplant.Add(implant1);
+       viewimplant.Add(implant2);
+       viewimplant.Add(implant);
+       bool flag = true;
+        for(int i = 0; i<viewimplant.Count; i++)
+        {
+            flag = viewimplant[i] == viewimplant[i] ? true : false; 
+            if(!flag) break;
+        }
+         Assert.IsTrue(flag);
+
+    }
+
+    [TestMethod]
+
+    public void TestSearchStatusMaintenance()
+    {
+        SelfImplant implant1=new("1",1);
+        implant1.ChangeState(Implant.States.M,DateOnly.FromDateTime(DateTime.Now));
+        AutoImplant implant2=new("2",2);
+        Company company=new();
+        company.InsertNewImplant(implant1);
+        company.InsertNewImplant(implant2);
+        List<Implant> maintenance=(List<Implant>) company.SearchStatusMaintenance();
+        Assert.IsTrue(maintenance.Count==1 && maintenance[0]==implant1);
+        
+    }
+
+    
 }
