@@ -1,7 +1,10 @@
-﻿public class Program
-{
-    public static void Main()
-    {
+﻿using System;
 
+class Program
+{
+    static void Main()
+    {
+        Client client = new Client();
+        client.Run();
     }
 }
