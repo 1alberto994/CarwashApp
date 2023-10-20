@@ -23,5 +23,4 @@ public class AutoImplant : Implant
     }
 
     public AutoImplant(string id, double washCost) : base(id, washCost) { }
-
 }

@@ -1,7 +1,7 @@
 public class Implant
 {
     public enum States { O, M, B };
-
+    
     private States _currentState = States.O;
 
     private double _costSinglewash;
