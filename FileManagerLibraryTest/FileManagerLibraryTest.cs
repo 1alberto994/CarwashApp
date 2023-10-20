@@ -1,4 +1,6 @@
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Newtonsoft.Json;
+using Microsoft.VisualBasic.FileIO;
 
 namespace FileManagerLybraryTest;
 
@@ -12,8 +14,8 @@ public class CarWashLibraryTest
 
         Company company = new();
 
-        string inPath = "C:/Users/bsett/Desktop/MyGitHub/TrainingProgramProject/CarwashApp/implants/jsonImplants.json";
-        string outPath = "C:/Users/bsett/Desktop/MyGitHub/TrainingProgramProject/CarwashApp/JsonInventory/SavedImplant.json";
+        string inPath = "..\\..\\..\\..\\implants\\jsonImplants.json";
+        string outPath = "..\\..\\..\\..\\implants\\SaveImplants.json";
 
         FileManager fileManager = new(inPath, outPath, company);
         fileManager.pushAll();
@@ -29,5 +31,7 @@ public class CarWashLibraryTest
             }
         }
         Assert.IsTrue(flag);
+        fileManager.Dispose(); 
+        Assert.IsTrue(FileSystem.GetFileInfo(outPath).Length != 0);
     }
 }
