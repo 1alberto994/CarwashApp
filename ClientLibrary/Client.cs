@@ -2,11 +2,9 @@ public class Client
 {
     private Company company;
 
-    public Client()
-
-
+    public Client(Company cmp)
     {
-        company = new Company(); // Inizializza l'oggetto Company
+       company = cmp; // Inizializza l'oggetto Company
     }
 
     public void Run()
