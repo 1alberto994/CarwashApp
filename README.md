@@ -6,6 +6,6 @@
 # 2 
 # Tasks Davide Brancato
 -FileManager & CarWshLibrary interation
--CarWashLibrary Search algorithms
+-CarWashLibrary Search algorithms (with Event Listener)
 -File manager & algorithms [test]
 

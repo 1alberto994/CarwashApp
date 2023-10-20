@@ -112,10 +112,9 @@ public class Company
 
     public Implant ViewImplantByID(string ID)
     {
-
-
         return _implants[ID];
     }
+    
     public ICollection<Implant> SearchStatusMaintenance()
     {
         List<Implant> maintenance = new();
