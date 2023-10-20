@@ -85,15 +85,13 @@ private void ViewImplants()
             {
                 var selfImplant = (SelfImplant)implant;
                 Console.WriteLine($"Type: SelfImplant");
-                Console.WriteLine($"Compressor Counter: {selfImplant.CompressorCounter}");
-                Console.WriteLine($"Washing Counter: {selfImplant.WashingCounter}");
-                Console.WriteLine($"BrushWaxing Counter: {selfImplant.BrushWaxingCounter}");
+                Console.WriteLine(selfImplant.ToString());
             }
             else if (implant is AutoImplant)
             {
                 var autoImplant = (AutoImplant)implant;
                 Console.WriteLine($"Type: AutoImplant");
-                Console.WriteLine($"Wash Count: {autoImplant.CountWash}");
+                Console.WriteLine(autoImplant.ToString());
             }
         }
     }

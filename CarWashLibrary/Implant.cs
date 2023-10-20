@@ -11,6 +11,7 @@ public class Implant
     private string _id;
 
     private int _howManyTimeBroken = 0;
+    
 
     protected void RaiseEvent(EventArgs e)
     {
