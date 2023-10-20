@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 public class FileManager : IDisposable
 {
+    // instead of paying O(n) for every single "saveAll()" call, (that should call viewImplant() that have a O(n) complexity) i will mantain an updated Data structur 
+    private List<Implant> _implants = new();
+
     private string _inPath, _outPath;
     private Company _company;
 
@@ -11,7 +14,6 @@ public class FileManager : IDisposable
     {
         Disposing();
         GC.SuppressFinalize(this);
-
     }
 
     protected void Disposing()
@@ -25,13 +27,13 @@ public class FileManager : IDisposable
 
     private void SaveAll()
     {
-        List<Implant> implants = (List<Implant>)_company.ViewImplant();
         File.Delete(_outPath);
-        string[] serializedImplants = new string[implants.Count];
+        string[] serializedImplants = new string[_implants.Count];
 
-        for(int i = 0; i< implants.Count; i++){
+        for (int i = 0; i < _implants.Count; i++)
+        {
             // Serializing with NewtonSoftJson to handle the Polimorphism
-            serializedImplants[i] = JsonConvert.SerializeObject(implants[i], Formatting.None, new JsonSerializerSettings
+            serializedImplants[i] = JsonConvert.SerializeObject(_implants[i], Formatting.None, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             });
@@ -47,12 +49,9 @@ public class FileManager : IDisposable
             while ((jsonLine = JsonFileReader.ReadLine()) != null)
             {
                 // Serializing with NewtonSoftJson to handle the Polimorphism
-                Implant implant = JsonConvert.DeserializeObject<Implant>(jsonLine, new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto
-                });
-                if (implant is AutoImplant)
-                    _company.InsertNewImplant(implant);
+                Implant implant = JsonConvert.DeserializeObject<Implant>(jsonLine, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+                _company.InsertNewImplant(implant);
+                _implants.Add(implant);
             }
         }
     }
@@ -62,12 +61,30 @@ public class FileManager : IDisposable
         _inPath = inPath;
         _outPath = outPath;
         _company = company;
+        pushAll();
+        _company.implantUpdated += ImplantUpdateHandler;
+        _company.implantStatusChanged += ImplantStatusChangedHandler;
     }
+
 
     public FileManager(string inPath, Company company)
     {
         _inPath = _outPath = inPath;
         _company = company;
+        pushAll();
+        _company.implantUpdated += ImplantUpdateHandler;
+        _company.implantStatusChanged += ImplantStatusChangedHandler;
+    }
+
+    public void ImplantUpdateHandler(object implant, EventArgs e)
+    {
+        if (implant is Implant) _implants.Add((Implant)implant);
+        SaveAll();
+    }
+
+    public void ImplantStatusChangedHandler(object sender, EventArgs e)
+    {
+        SaveAll(); 
     }
 
     ~FileManager()

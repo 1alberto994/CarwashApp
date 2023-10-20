@@ -13,13 +13,13 @@ public class Implant
     private int _howManyTimeBroken = 0;
     
 
-    protected void RaiseEvent(EventArgs e)
+    protected void RaiseEvent(EventArgs e, Implant.States state)
     {
         EventHandler<EventArgs> statusChanged = StateChangedEvent;
 
         if (statusChanged != null)
         {
-            statusChanged(this, e);
+            statusChanged(state, e);
         }
     }
 
@@ -40,11 +40,11 @@ public class Implant
 
         _currentState = state;
         _logPrevStates.Add((date, _currentState));
+        RaiseEvent(EventArgs.Empty, state);
 
         if (_currentState != States.B) return true;
 
         _howManyTimeBroken++;
-        RaiseEvent(EventArgs.Empty);
 
         return true;
     }

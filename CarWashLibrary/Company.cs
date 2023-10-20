@@ -10,6 +10,28 @@ public class Company
 
     private AutoImplant _mostUsedAutoImplant = null;
 
+    public event EventHandler<EventArgs> implantUpdated;
+    public event EventHandler<EventArgs> implantStatusChanged;
+
+    protected virtual void RaiseImplantStatusChangedEvent(EventArgs e)
+    {
+        EventHandler<EventArgs> statusCheged = implantStatusChanged;
+        //check if there are any Subscriber
+        if (statusCheged != null)
+        {
+            statusCheged(this, e);
+        }
+    }
+
+    protected virtual void RaiseImplantUpdateEvent(EventArgs e, Implant implant)
+    {
+        EventHandler<EventArgs> update = implantUpdated;
+        if (update != null)
+        {
+            update(implant, e);
+        }
+    }
+
     public Implant SearchMostBrokenImplant()
     {
         if (_implants.Count == 0) throw new NoImplantsLoaded("There isn't any Washing Implant in this Company");
@@ -55,26 +77,29 @@ public class Company
 
         try
         {
-            _implants.Add(implant.ID, implant);
+            _implants[implant.ID] = implant;
             implant.StateChangedEvent += StateChangedHandler;
+            RaiseImplantUpdateEvent(EventArgs.Empty, implant);
             if (implant is AutoImplant) { ((AutoImplant)implant).WashDoneEvent += WashIncrementHandler; }
             return true;
         }
-        catch (ArgumentException)
+        catch (Exception e) when (e is ArgumentException || e is KeyNotFoundException)
         {
             return false;
         }
     }
 
-    public void StateChangedHandler(object sender, EventArgs e)
+    public void StateChangedHandler(object state, EventArgs e)
     {
-        if (!_ImplantStatusChanged) { _ImplantStatusChanged = true; }
+        RaiseImplantStatusChangedEvent(EventArgs.Empty);
+        if ((Implant.States)state == Implant.States.B && !_ImplantStatusChanged) { _ImplantStatusChanged = true; }
     }
 
     public void WashIncrementHandler(object sender, EventArgs e)
     {
         if (!_autoImplantStatusChanged) { _autoImplantStatusChanged = true; }
     }
+
     public Company() { }
 
     public Company(ICollection<Implant> implants)
@@ -82,8 +107,6 @@ public class Company
         foreach (Implant implant in implants)
         {
             InsertNewImplant(implant);
-            implant.StateChangedEvent += StateChangedHandler;
-            if (implant is AutoImplant) { ((AutoImplant)implant).WashDoneEvent += WashIncrementHandler; }
         }
 
     }
@@ -114,7 +137,7 @@ public class Company
     {
         return _implants[ID];
     }
-    
+
     public ICollection<Implant> SearchStatusMaintenance()
     {
         List<Implant> maintenance = new();

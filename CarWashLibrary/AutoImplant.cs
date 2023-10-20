@@ -7,6 +7,7 @@ public class AutoImplant : Implant
     protected virtual void RaiseWashDoneEvent(EventArgs e)
     {
         EventHandler<EventArgs> washDone = WashDoneEvent;
+        //check if there are any Subscriber
         if (washDone != null)
         {
             washDone(this, e);
