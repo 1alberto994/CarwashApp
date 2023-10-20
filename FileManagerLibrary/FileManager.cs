@@ -1,6 +1,5 @@
-using System.Security.AccessControl;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
+using Newtonsoft.Json;
 
 public class FileManager
 {
@@ -9,31 +8,33 @@ public class FileManager
 
     private async void SaveAll()
     {
-        List<Implant> implants = new(); // _company.ViewImplant();
+        List<Implant> implants = (List<Implant>) _company.ViewImplant();
 
         StreamWriter JsonFileWR = new StreamWriter(_outPath);
         foreach (Implant implant in implants)
         {
-            string serializedImplant = JsonSerializer.Serialize(implant);
+            // Serializing with NewtonSoftJson to handle the Polimorphism
+            string serializedImplant = JsonConvert.SerializeObject(implant, Formatting.None, new JsonSerializerSettings{
+                TypeNameHandling = TypeNameHandling.All
+            });
+
             await JsonFileWR.WriteLineAsync(serializedImplant);
         }
     }
 
-    private void pushAll()
+    public void pushAll()
     {
         using (StreamReader JsonFileReader = new(_inPath))
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
             string? jsonLine;
             while ((jsonLine = JsonFileReader.ReadLine()) != null)
             {
-
-                var implant = JsonSerializer.Deserialize<Implant>(jsonLine, options);
+                // Serializing with NewtonSoftJson to handle the Polimorphism
+                Implant implant = JsonConvert.DeserializeObject<Implant>(jsonLine, new JsonSerializerSettings{
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+                if(implant is AutoImplant)
                 _company.InsertNewImplant(implant);
-
             }
         }
     }
@@ -43,16 +44,12 @@ public class FileManager
         _inPath = inPath;
         _outPath = outPath;
         _company = company;
-
-        pushAll();
     }
 
     public FileManager(string inPath, Company company)
     {
         _inPath = _outPath = inPath;
         _company = company;
-
-        pushAll();
     }
 
     ~FileManager()

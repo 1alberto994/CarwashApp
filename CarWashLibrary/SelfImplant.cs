@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-[JsonDerivedType(typeof(SelfImplant), typeDiscriminator: "SelfImplant")]
 public class SelfImplant : Implant
 {
     private int _compressorCounter = 0;

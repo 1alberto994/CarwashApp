@@ -1,6 +1,3 @@
-using System.Text.Json.Serialization;
-[JsonDerivedType(typeof(Implant), typeDiscriminator: "Implant")]
-
 public class Implant
 {
     public enum States { O, M, B };
