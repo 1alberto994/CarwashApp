@@ -9,4 +9,9 @@ public class SelfImplant : Implant
     public int BrushWaxingCounter { get => _brushwaxingCounter; }
 
     public SelfImplant(string id, double washCost) : base(id, washCost) { }
+
+    public override string ToString()
+    {
+        return $"ID: {ID},Current State:{CurrentState}, Cost Single Wash:{CostSingleWash},Compressor counter:{CompressorCounter},Washing Counter:{WashingCounter},BrushWaxing counter:{BrushWaxingCounter}";
+    }
 }

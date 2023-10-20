@@ -15,7 +15,10 @@ public class AutoImplant : Implant
 
 
     public int CountWash { get => _countWash; }
-
+    public override string ToString()
+    {
+        return $"ID: {ID},Current State:{CurrentState}, Cost Single Wash:{CostSingleWash},Count Wash:{CountWash}";
+    }
     public void MakeWash()
     {
         _countWash++;
