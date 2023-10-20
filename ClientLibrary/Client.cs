@@ -76,10 +76,25 @@ private void ViewImplants()
     {
         // Richiama il metodo ViewImplant dalla classe Company
         ICollection<Implant> implants = company.ViewImplant();
-        // Visualizza i risultati
+
         foreach (var implant in implants)
         {
             Console.WriteLine($"ID: {implant.ID}, Current State: {implant.CurrentState}");
+
+            if (implant is SelfImplant)
+            {
+                var selfImplant = (SelfImplant)implant;
+                Console.WriteLine($"Type: SelfImplant");
+                Console.WriteLine($"Compressor Counter: {selfImplant.CompressorCounter}");
+                Console.WriteLine($"Washing Counter: {selfImplant.WashingCounter}");
+                Console.WriteLine($"BrushWaxing Counter: {selfImplant.BrushWaxingCounter}");
+            }
+            else if (implant is AutoImplant)
+            {
+                var autoImplant = (AutoImplant)implant;
+                Console.WriteLine($"Type: AutoImplant");
+                Console.WriteLine($"Wash Count: {autoImplant.CountWash}");
+            }
         }
     }
     catch (Exception ex)
@@ -92,21 +107,59 @@ private void InsertNewImplant()
 {
     try
     {
-        // Chiedi all'utente di inserire i dettagli per il nuovo impianto
-        Console.Write("Enter ID: ");
-        string id = Console.ReadLine();
-        Console.Write("Enter Cost for Single Wash: ");
-        double cost = Convert.ToDouble(Console.ReadLine());
-
-        // Crea e inserisci il nuovo impianto
-        Implant newImplant = new Implant(id, cost);
-        if (company.InsertNewImplant(newImplant))
+        Console.WriteLine("Choose the type of implant:");
+        Console.WriteLine("1. SelfImplant");
+        Console.WriteLine("2. AutoImplant");
+        Console.Write("Enter your choice: ");
+        
+        if (int.TryParse(Console.ReadLine(), out int choice))
         {
-            Console.WriteLine("New implant added successfully.");
+            if (choice == 1)
+            {
+                Console.Write("Enter ID: ");
+                string id = Console.ReadLine();
+                Console.Write("Enter Cost for Single Wash: ");
+                double cost = Convert.ToDouble(Console.ReadLine());
+
+
+                SelfImplant newSelfImplant = new SelfImplant(id, cost);
+
+                if (company.InsertNewImplant(newSelfImplant))
+                {
+                    Console.WriteLine("New SelfImplant added successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to add the SelfImplant. An implant with the same ID already exists.");
+                }
+            }
+            else if (choice == 2)
+            {
+                Console.Write("Enter ID: ");
+                string id = Console.ReadLine();
+                Console.Write("Enter Cost for Single Wash: ");
+                double cost = Convert.ToDouble(Console.ReadLine());
+    
+                AutoImplant newAutoImplant = new AutoImplant(id, cost);
+               
+
+                if (company.InsertNewImplant(newAutoImplant))
+                {
+                    Console.WriteLine("New AutoImplant added successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to add the AutoImplant. An implant with the same ID already exists.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please try again.");
+            }
         }
         else
         {
-            Console.WriteLine("Failed to add the implant. An implant with the same ID already exists.");
+            Console.WriteLine("Invalid input. Please enter a number.");
         }
     }
     catch (Exception ex)
@@ -114,7 +167,6 @@ private void InsertNewImplant()
         Console.WriteLine($"An error occurred while inserting a new implant: {ex.Message}");
     }
 }
-
 private void SearchMostBrokenImplant()
 {
     try
