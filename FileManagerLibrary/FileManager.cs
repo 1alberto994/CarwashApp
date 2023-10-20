@@ -1,24 +1,42 @@
 using Newtonsoft.Json;
 
-public class FileManager
+public class FileManager : IDisposable
 {
     private string _inPath, _outPath;
     private Company _company;
 
-    private async void SaveAll()
-    {
-        List<Implant> implants = (List<Implant>) _company.ViewImplant();
+    private bool dispose = false;
 
-        StreamWriter JsonFileWR = new StreamWriter(_outPath);
-        foreach (Implant implant in implants)
+    public void Dispose()
+    {
+        Disposing();
+        GC.SuppressFinalize(this);
+
+    }
+
+    protected void Disposing()
+    {
+        if (!dispose)
         {
+            SaveAll();
+            dispose = true;
+        }
+    }
+
+    private void SaveAll()
+    {
+        List<Implant> implants = (List<Implant>)_company.ViewImplant();
+        File.Delete(_outPath);
+        string[] serializedImplants = new string[implants.Count];
+
+        for(int i = 0; i< implants.Count; i++){
             // Serializing with NewtonSoftJson to handle the Polimorphism
-            string serializedImplant = JsonConvert.SerializeObject(implant, Formatting.None, new JsonSerializerSettings{
+            serializedImplants[i] = JsonConvert.SerializeObject(implants[i], Formatting.None, new JsonSerializerSettings
+            {
                 TypeNameHandling = TypeNameHandling.All
             });
-
-            await JsonFileWR.WriteLineAsync(serializedImplant);
         }
+        File.WriteAllLines(_outPath, serializedImplants);
     }
 
     public void pushAll()
@@ -29,11 +47,12 @@ public class FileManager
             while ((jsonLine = JsonFileReader.ReadLine()) != null)
             {
                 // Serializing with NewtonSoftJson to handle the Polimorphism
-                Implant implant = JsonConvert.DeserializeObject<Implant>(jsonLine, new JsonSerializerSettings{
+                Implant implant = JsonConvert.DeserializeObject<Implant>(jsonLine, new JsonSerializerSettings
+                {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
-                if(implant is AutoImplant)
-                _company.InsertNewImplant(implant);
+                if (implant is AutoImplant)
+                    _company.InsertNewImplant(implant);
             }
         }
     }
@@ -53,6 +72,6 @@ public class FileManager
 
     ~FileManager()
     {
-        SaveAll();
+        Dispose();
     }
 }
