@@ -78,6 +78,7 @@ public class Company
 
     public void WashIncrementHandler(object implant, EventArgs e)
     {
+        RaiseImplantStatusChangedEvent(EventArgs.Empty);
         if (((AutoImplant)implant).CountWash > _mostUsedAutoImplant.CountWash) { _mostUsedAutoImplant = (AutoImplant)implant; }
     }
 
