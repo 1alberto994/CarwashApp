@@ -12,6 +12,6 @@ public class SelfImplant : Implant
 
     public override string ToString()
     {
-        return $"ID: {ID},Current State:{CurrentState}, Cost Single Wash:{CostSingleWash},Compressor counter:{CompressorCounter},Washing Counter:{WashingCounter},BrushWaxing counter:{BrushWaxingCounter}";
+        return $"ID: {ID}, Current State:{CurrentState}, Cost Single Wash:{CostSingleWash}, Compressor counter:{CompressorCounter}, Washing Counter:{WashingCounter}, BrushWaxing counter:{BrushWaxingCounter}";
     }
 }

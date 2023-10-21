@@ -4,7 +4,7 @@ public class Client
 
     public Client(Company cmp)
     {
-       company = cmp; // Inizializza l'oggetto Company
+        company = cmp; // Inizializza l'oggetto Company
     }
 
     public void Run()
@@ -13,7 +13,7 @@ public class Client
 
         do
         {
-            Console.WriteLine("Company Menu");
+            Console.WriteLine("Company Menu\n");
             Console.WriteLine("1. View Implants");
             Console.WriteLine("2. Insert New Implant");
             Console.WriteLine("3. Search Most Broken Implant");
@@ -23,15 +23,17 @@ public class Client
             Console.WriteLine("7. Change Current state");
             Console.WriteLine("8. Exit");
 
-            Console.Write("Enter your choice: ");
+            Console.Write("\nEnter your choice: ");
             if (int.TryParse(Console.ReadLine(), out choice))
             {
+                Console.WriteLine();
                 try
                 {
                     switch (choice)
                     {
                         case 1:
                             ViewImplants();
+                            Console.WriteLine();
                             break;
                         case 2:
                             InsertNewImplant();
@@ -76,24 +78,21 @@ public class Client
     {
         try
         {
-            // Richiama il metodo ViewImplant dalla classe Company
             ICollection<Implant> implants = company.ViewImplant();
 
             foreach (var implant in implants)
             {
-                Console.WriteLine($"ID: {implant.ID}, Current State: {implant.CurrentState}");
-
                 if (implant is SelfImplant)
                 {
                     var selfImplant = (SelfImplant)implant;
                     Console.WriteLine($"Type: SelfImplant");
-                    Console.WriteLine(selfImplant.ToString());
+                    Console.WriteLine(selfImplant.ToString() + "\n");
                 }
                 else if (implant is AutoImplant)
                 {
                     var autoImplant = (AutoImplant)implant;
-                    Console.WriteLine($"Type: AutoImplant");
-                    Console.WriteLine(autoImplant.ToString());
+                    Console.WriteLine($"Type: AutoImplant\t");
+                    Console.WriteLine(autoImplant.ToString() + "\n");
                 }
             }
         }
@@ -126,7 +125,7 @@ public class Client
 
                     if (company.InsertNewImplant(newSelfImplant))
                     {
-                        Console.WriteLine("New SelfImplant added successfully.");
+                        Console.WriteLine("\nNew SelfImplant added successfully.\n");
                     }
                     else
                     {
@@ -145,26 +144,26 @@ public class Client
 
                     if (company.InsertNewImplant(newAutoImplant))
                     {
-                        Console.WriteLine("New AutoImplant added successfully.");
+                        Console.WriteLine("\nNew AutoImplant added successfully.\n");
                     }
                     else
                     {
-                        Console.WriteLine("Failed to add the AutoImplant. An implant with the same ID already exists.");
+                        Console.WriteLine("\nFailed to add the AutoImplant. An implant with the same ID already exists.\n");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Invalid choice. Please try again.");
+                    Console.WriteLine("\nInvalid choice. Please try again.");
                 }
             }
             else
             {
-                Console.WriteLine("Invalid input. Please enter a number.");
+                Console.WriteLine("\nInvalid input. Please enter a number.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred while inserting a new implant: {ex.Message}");
+            Console.WriteLine($"\nAn error occurred while inserting a new implant: {ex.Message}");
         }
     }
     private void SearchMostBrokenImplant()
@@ -172,11 +171,11 @@ public class Client
         try
         {
             Implant mostBroken = company.SearchMostBrokenImplant();
-            Console.WriteLine($"Most Broken Implant - ID: {mostBroken.ID}, Times Broken: {mostBroken.HowManyTimeBroken}");
+            Console.WriteLine($"Most Broken Implant: {mostBroken} Broken Time: {mostBroken.HowManyTimeBroken}\n");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred while searching for the most broken implant: {ex.Message}");
+            Console.WriteLine($"An error occurred while searching for the most broken implant: {ex.Message}\n");
         }
     }
 
@@ -185,11 +184,11 @@ public class Client
         try
         {
             AutoImplant mostUsedAutoImplant = company.SearchMostUsedAutoImplant();
-            Console.WriteLine($"Most Used Auto Implant - ID: {mostUsedAutoImplant.ID}, Wash Count: {mostUsedAutoImplant.CountWash}");
+            Console.WriteLine($"Most Used Auto Implant: {mostUsedAutoImplant}, Wash Count: {mostUsedAutoImplant.CountWash}\n");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred while searching for the most used auto implant: {ex.Message}");
+            Console.WriteLine($"An error occurred while searching for the most used auto implant: {ex.Message}\n");
         }
     }
 
@@ -203,16 +202,16 @@ public class Client
             Implant foundImplant = company.ViewImplantByID(id);
             if (foundImplant != null)
             {
-                Console.WriteLine($"Found Implant - ID: {foundImplant.ID}, Current State: {foundImplant.CurrentState}");
+                Console.WriteLine($"\nFound Implant: {foundImplant}\n");
             }
             else
             {
-                Console.WriteLine($"No implant found with ID: {id}");
+                Console.WriteLine($"\nNo implant found with ID: {id}\n");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred while searching for an implant by ID: {ex.Message}");
+            Console.WriteLine($"\nAn error occurred while searching for an implant by ID: {ex.Message}\n");
         }
     }
 
@@ -221,15 +220,20 @@ public class Client
         try
         {
             ICollection<Implant> maintenanceImplants = company.SearchStatusMaintenance();
+            if (maintenanceImplants.Count == 0) { 
+                Console.WriteLine("There are no implants in Maintenance State\n");
+                return;
+            }
             Console.WriteLine("Implants in Maintenance:");
             foreach (var implant in maintenanceImplants)
             {
-                Console.WriteLine($"ID: {implant.ID}, Current State: {implant.CurrentState}");
+                Console.WriteLine($"{implant}");
             }
+            Console.WriteLine();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred while searching for implants in maintenance: {ex.Message}");
+            Console.WriteLine($"An error occurred while searching for implants in maintenance: {ex.Message}\n");
         }
     }
     private void ChangeImplantState()
@@ -242,7 +246,7 @@ public class Client
         {
             Implant implant = company.ViewImplantByID(id);
 
-            Console.WriteLine("Current State: " + implant.CurrentState);
+            Console.WriteLine("Current State: " + implant.CurrentState + "\n");
             Console.WriteLine("Available States: O (Operational), M (Maintenance), B (Broken)");
             Console.Write("Enter the new state: ");
             string newState = Console.ReadLine();
@@ -251,22 +255,22 @@ public class Client
             {
                 if (implant.ChangeState(newStateEnum, DateOnly.FromDateTime(DateTime.Now)))
                 {
-                    Console.WriteLine("State changed successfully.");
-                    Console.WriteLine("Updated State: " + implant.CurrentState);
+                    Console.WriteLine("\nState changed successfully.");
+                    Console.WriteLine("Updated State: " + implant.CurrentState + "\n");
                 }
                 else
                 {
-                    Console.WriteLine("State change failed. The new state is the same as the current state.");
+                    Console.WriteLine("State change failed. The new state is the same as the current state.\n");
                 }
             }
             else
             {
-                Console.WriteLine("Invalid state. Please enter O, M, or B.");
+                Console.WriteLine("Invalid state. Please enter O, M, or B.\n");
             }
         }
         catch (KeyNotFoundException)
         {
-            Console.WriteLine("Invalid Key Inserted"); 
+            Console.WriteLine("Invalid Key Inserted\n");
         }
     }
 }
