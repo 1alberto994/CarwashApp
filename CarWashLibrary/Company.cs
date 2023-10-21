@@ -4,9 +4,7 @@ public class Company
 {
     private Dictionary<string, Implant> _implants = new();
 
-    private bool _ImplantStatusChanged = true, _autoImplantStatusChanged = true;
-
-    private Implant _maxImplant = null;
+    private Implant _mostBrokenImplant = null;
 
     private AutoImplant _mostUsedAutoImplant = null;
 
@@ -35,51 +33,31 @@ public class Company
     public Implant SearchMostBrokenImplant()
     {
         if (_implants.Count == 0) throw new NoImplantsLoaded("There isn't any Washing Implant in this Company");
-        if (!_ImplantStatusChanged) return _maxImplant;
-
-        _ImplantStatusChanged = false;
-        int maxTimeBroken = 0;
-        foreach (var implant in _implants.Values)
-        {
-            int howManyTimeBroken = implant.HowManyTimeBroken;
-            if (howManyTimeBroken > maxTimeBroken)
-            {
-                _maxImplant = implant;
-                maxTimeBroken = howManyTimeBroken;
-            }
-        }
-        return _maxImplant;
+        return _mostBrokenImplant;
     }
 
     public AutoImplant SearchMostUsedAutoImplant()
     {
         if (_implants.Count == 0) throw new NoImplantsLoaded("There isn't any Washing Implant in this Company");
-        if (!_autoImplantStatusChanged) return _mostUsedAutoImplant;
-
-        _autoImplantStatusChanged = false;
-        int maxUse = 0;
-        foreach (Implant implant in _implants.Values)
-        {
-            if (implant is AutoImplant && ((AutoImplant)implant).CountWash >= maxUse)
-            {
-                maxUse = ((AutoImplant)implant).CountWash;
-                _mostUsedAutoImplant = (AutoImplant)implant;
-            }
-        }
         return _mostUsedAutoImplant;
 
     }
 
     public bool InsertNewImplant(Implant implant)
     {
-        if (_maxImplant == null) _maxImplant = implant;
-        if (_mostUsedAutoImplant == null && implant is AutoImplant) _mostUsedAutoImplant = (AutoImplant)implant;
-
         try
         {
             _implants[implant.ID] = implant;
+
+            if (_mostBrokenImplant == null || implant.HowManyTimeBroken > _mostBrokenImplant.HowManyTimeBroken) _mostBrokenImplant = implant;
+            if (implant is AutoImplant && (_mostUsedAutoImplant == null || ((AutoImplant)implant).CountWash > _mostUsedAutoImplant.CountWash)) _mostUsedAutoImplant = (AutoImplant)implant;
+
+            // subrscribe to the status changed event on implant
             implant.StateChangedEvent += StateChangedHandler;
+
             RaiseImplantUpdateEvent(EventArgs.Empty, implant);
+
+            // subrscribe to the update countWash event on implant
             if (implant is AutoImplant) { ((AutoImplant)implant).WashDoneEvent += WashIncrementHandler; }
             return true;
         }
@@ -89,15 +67,18 @@ public class Company
         }
     }
 
-    public void StateChangedHandler(object state, EventArgs e)
+    public void StateChangedHandler(object implant, EventArgs e)
     {
         RaiseImplantStatusChangedEvent(EventArgs.Empty);
-        if ((Implant.States)state == Implant.States.B && !_ImplantStatusChanged) { _ImplantStatusChanged = true; }
+        if (((Implant)implant).CurrentState == Implant.States.B && ((Implant)implant).HowManyTimeBroken > _mostBrokenImplant.HowManyTimeBroken)
+        {
+            _mostBrokenImplant = (Implant)implant;
+        }
     }
 
-    public void WashIncrementHandler(object sender, EventArgs e)
+    public void WashIncrementHandler(object implant, EventArgs e)
     {
-        if (!_autoImplantStatusChanged) { _autoImplantStatusChanged = true; }
+        if (((AutoImplant)implant).CountWash > _mostUsedAutoImplant.CountWash) { _mostUsedAutoImplant = (AutoImplant)implant; }
     }
 
     public Company() { }

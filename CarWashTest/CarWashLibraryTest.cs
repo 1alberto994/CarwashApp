@@ -41,9 +41,6 @@ public class CarWashLibraryTest
         implant2.ChangeState(Implant.States.O, DateOnly.FromDateTime(DateTime.Now));
         implant2.ChangeState(Implant.States.B, DateOnly.FromDateTime(DateTime.Now));
         Assert.AreEqual(implant2, companyWithCollection.SearchMostBrokenImplant());
-
-
-
     }
 
 
