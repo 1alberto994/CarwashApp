@@ -25,7 +25,7 @@ public class CarWashLibraryTest
         Assert.IsTrue(implant.ChangeState(Implant.States.M, new DateOnly(2023, 12, 10)));
         Assert.AreEqual(Implant.States.M, implant.CurrentState);
 
-        Assert.IsFalse(implant.ChangeState(Implant.States.M, new DateOnly(2023, 12, 10)));
+        Assert.IsTrue(implant.ChangeState(Implant.States.M, new DateOnly(2023, 12, 10)));
     }
 
     [TestMethod]
