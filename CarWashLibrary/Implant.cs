@@ -35,7 +35,7 @@ public class Implant
 
     public bool ChangeState(States state, DateOnly date)
     {
-        if (state == _currentState) { return false; }
+        if (state == _currentState) { return true; }
         if (date < DateOnly.FromDateTime(DateTime.Now)) throw new InvalidDateExcepetion($"{date} inserted is in the past!");
 
         _currentState = state;

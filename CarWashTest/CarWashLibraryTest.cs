@@ -7,6 +7,18 @@ public class CarWashLibraryTest
 {
 
     [TestMethod]
+    public void TestInsertNewImplant()
+    {
+        Implant[] implants = { new("1", 12.3), new("2", 10.4), new("3", 7.4) };
+        Company testCompany = new(implants);
+        AutoImplant insertedImplant = new("4", 2);
+        testCompany.InsertNewImplant(insertedImplant);
+        Assert.AreEqual(insertedImplant, testCompany.ViewImplantByID("4"));
+        Assert.IsTrue(testCompany.InsertNewImplant(insertedImplant));
+
+    }
+
+    [TestMethod]
     public void TestImplantChangeState()
     {
         Implant implant = new("1", 13.4);
@@ -65,35 +77,35 @@ public class CarWashLibraryTest
     [TestMethod]
     public void TestViewImplantByID()
     {
-       AutoImplant implant=new("1",1);
-       SelfImplant implant1=new("2",2);
-       SelfImplant implant2=new("3",3);
-       Implant[] implants = { implant,implant1,implant2};
-       Company companyWithCollection = new(implants);
-       Assert.AreEqual(implant, companyWithCollection.ViewImplantByID("1")); 
+        AutoImplant implant = new("1", 1);
+        SelfImplant implant1 = new("2", 2);
+        SelfImplant implant2 = new("3", 3);
+        Implant[] implants = { implant, implant1, implant2 };
+        Company companyWithCollection = new(implants);
+        Assert.AreEqual(implant, companyWithCollection.ViewImplantByID("1"));
     }
-    
+
     [TestMethod]
 
     public void TestViewImplant()
     {
-       SelfImplant implant1=new("1",1);
-       SelfImplant implant2=new("2",2);
-       AutoImplant implant=new("3",3);
-       List<Implant> mynewimplant=new List<Implant>() ;
-       mynewimplant.Add(implant1);
-       mynewimplant.Add(implant2);
-       mynewimplant.Add(implant);
-       
-       Company companyWithCollection = new();
-       List<Implant> viewimplant =(List<Implant>) companyWithCollection.ViewImplant();
-       bool flag = true;
-        for(int i = 0; i<viewimplant.Count; i++)
+        SelfImplant implant1 = new("1", 1);
+        SelfImplant implant2 = new("2", 2);
+        AutoImplant implant = new("3", 3);
+        List<Implant> mynewimplant = new List<Implant>();
+        mynewimplant.Add(implant1);
+        mynewimplant.Add(implant2);
+        mynewimplant.Add(implant);
+
+        Company companyWithCollection = new();
+        List<Implant> viewimplant = (List<Implant>)companyWithCollection.ViewImplant();
+        bool flag = true;
+        for (int i = 0; i < viewimplant.Count; i++)
         {
-            flag = mynewimplant[i] == viewimplant[i] ? true : false; 
-            if(!flag) break;
+            flag = mynewimplant[i] == viewimplant[i] ? true : false;
+            if (!flag) break;
         }
-         Assert.IsTrue(flag);
+        Assert.IsTrue(flag);
 
     }
 
@@ -101,16 +113,16 @@ public class CarWashLibraryTest
 
     public void TestSearchStatusMaintenance()
     {
-        SelfImplant implant1=new("1",1);
-        implant1.ChangeState(Implant.States.M,DateOnly.FromDateTime(DateTime.Now));
-        AutoImplant implant2=new("2",2);
-        Company company=new();
+        SelfImplant implant1 = new("1", 1);
+        implant1.ChangeState(Implant.States.M, DateOnly.FromDateTime(DateTime.Now));
+        AutoImplant implant2 = new("2", 2);
+        Company company = new();
         company.InsertNewImplant(implant1);
         company.InsertNewImplant(implant2);
-        List<Implant> maintenance=(List<Implant>) company.SearchStatusMaintenance();
-        Assert.IsTrue(maintenance.Count==1 && maintenance[0]==implant1);
-        
+        List<Implant> maintenance = (List<Implant>)company.SearchStatusMaintenance();
+        Assert.IsTrue(maintenance.Count == 1 && maintenance[0] == implant1);
+
     }
 
-    
+
 }

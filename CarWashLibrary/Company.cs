@@ -47,6 +47,7 @@ public class Company
     {
         try
         {
+            if (_implants.ContainsKey(implant.ID)) { return true; }
             _implants[implant.ID] = implant;
 
             if (_mostBrokenImplant == null || implant.HowManyTimeBroken > _mostBrokenImplant.HowManyTimeBroken) _mostBrokenImplant = implant;
@@ -54,11 +55,11 @@ public class Company
 
             // subrscribe to the status changed event on implant
             implant.StateChangedEvent += StateChangedHandler;
-
-            RaiseImplantUpdateEvent(EventArgs.Empty, implant);
-
             // subrscribe to the update countWash event on implant
             if (implant is AutoImplant) { ((AutoImplant)implant).WashDoneEvent += WashIncrementHandler; }
+            
+            RaiseImplantUpdateEvent(EventArgs.Empty, implant);
+     
             return true;
         }
         catch (Exception e) when (e is ArgumentException || e is KeyNotFoundException)
