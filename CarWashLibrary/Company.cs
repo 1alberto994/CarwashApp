@@ -13,11 +13,11 @@ public class Company
 
     protected virtual void RaiseImplantStatusChangedEvent(EventArgs e)
     {
-        EventHandler<EventArgs> statusCheged = implantStatusChanged;
+        EventHandler<EventArgs> statusChanged = implantStatusChanged;
         //check if there are any Subscriber
-        if (statusCheged != null)
+        if (statusChanged != null)
         {
-            statusCheged(this, e);
+            statusChanged(this, e);
         }
     }
 
@@ -80,7 +80,7 @@ public class Company
     public void WashIncrementHandler(object implant, EventArgs e)
     {
         RaiseImplantStatusChangedEvent(EventArgs.Empty);
-        if (((AutoImplant)implant).CountWash > _mostUsedAutoImplant.CountWash) { _mostUsedAutoImplant = (AutoImplant)implant; }
+        if (implant is AutoImplant && ((AutoImplant)implant).CountWash > _mostUsedAutoImplant.CountWash) { _mostUsedAutoImplant = (AutoImplant)implant; }
     }
 
     public Company() { }

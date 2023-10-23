@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 
 public class FileManager : IDisposable
 {
-    // instead of paying O(n) for every single "saveAll()" call, (that should call viewImplant() that have a O(n) complexity) i will mantain an updated Data structur 
     private List<Implant> _implants = new();
 
     private string _inPath, _outPath;
@@ -33,10 +32,7 @@ public class FileManager : IDisposable
         for (int i = 0; i < _implants.Count; i++)
         {
             // Serializing with NewtonSoftJson to handle the Polimorphism
-            serializedImplants[i] = JsonConvert.SerializeObject(_implants[i], Formatting.None, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            });
+            serializedImplants[i] = JsonConvert.SerializeObject(_implants[i], Formatting.None, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
         }
         File.WriteAllLines(_outPath, serializedImplants);
     }
@@ -48,7 +44,7 @@ public class FileManager : IDisposable
             string? jsonLine;
             while ((jsonLine = JsonFileReader.ReadLine()) != null)
             {
-                // Serializing with NewtonSoftJson to handle the Polimorphism
+                // Deserializing with NewtonSoftJson to handle the Polimorphism
                 Implant implant = JsonConvert.DeserializeObject<Implant>(jsonLine, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
                 _company.InsertNewImplant(implant);
                 _implants.Add(implant);
@@ -84,7 +80,7 @@ public class FileManager : IDisposable
 
     public void ImplantStatusChangedHandler(object sender, EventArgs e)
     {
-        SaveAll(); 
+        SaveAll();
     }
 
     ~FileManager()
